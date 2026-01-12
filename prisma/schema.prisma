@@ -1,0 +1,162 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// User & Authentication
+model User {
+  id        Int      @id @default(autoincrement())
+  username  String   @unique
+  password  String
+  name      String
+  role      String   @default("operator") // admin, kepala_desa, operator
+  email     String?
+  phone     String?
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  suratCreated Surat[] @relation("SuratCreatedBy")
+}
+
+// Data Penduduk
+model Penduduk {
+  id              Int       @id @default(autoincrement())
+  nik             String    @unique @db.VarChar(16)
+  nama            String
+  tempatLahir     String
+  tanggalLahir    DateTime
+  jenisKelamin    String    // L, P
+  golonganDarah   String?
+  agama           String
+  statusPerkawinan String
+  pekerjaan       String?
+  pendidikan      String?
+  kewarganegaraan String    @default("WNI")
+  alamat          String?   @db.Text
+  rt              String?
+  rw              String?
+  fotoUrl         String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  keluargaId      Int?
+  keluarga        Keluarga? @relation(fields: [keluargaId], references: [id])
+  statusKeluarga  String?   // kepala_keluarga, istri, anak, lainnya
+
+  suratList       Surat[]
+}
+
+// Data Keluarga (Kartu Keluarga)
+model Keluarga {
+  id            Int      @id @default(autoincrement())
+  noKK          String   @unique @db.VarChar(16)
+  kepalaKeluarga String
+  alamat        String   @db.Text
+  rt            String
+  rw            String
+  dusunId       Int?
+  dusun         Dusun?   @relation(fields: [dusunId], references: [id])
+  kodePos       String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  anggota       Penduduk[]
+}
+
+// Data Wilayah - Dusun
+model Dusun {
+  id        Int      @id @default(autoincrement())
+  nama      String
+  kode      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  rwList    RW[]
+  keluarga  Keluarga[]
+}
+
+// Data Wilayah - RW
+model RW {
+  id        Int      @id @default(autoincrement())
+  nama      String
+  nomor     String
+  ketua     String?
+  dusunId   Int
+  dusun     Dusun    @relation(fields: [dusunId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  rtList    RT[]
+}
+
+// Data Wilayah - RT
+model RT {
+  id        Int      @id @default(autoincrement())
+  nama      String
+  nomor     String
+  ketua     String?
+  rwId      Int
+  rw        RW       @relation(fields: [rwId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Data Surat
+model Surat {
+  id            Int      @id @default(autoincrement())
+  nomorSurat    String   @unique
+  jenisSurat    String   // SKU, domisili, tidak-mampu, etc.
+  kategori      String   // keterangan, pengantar
+  perihal       String
+  tanggalSurat  DateTime @default(now())
+  status        String   @default("pending") // pending, proses, selesai, ditolak
+  keterangan    String?  @db.Text
+  dataJson      String?  @db.Text // JSON data for flexible form fields
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  pendudukId    Int
+  penduduk      Penduduk @relation(fields: [pendudukId], references: [id])
+  
+  createdById   Int
+  createdBy     User     @relation("SuratCreatedBy", fields: [createdById], references: [id])
+}
+
+// Profil Desa
+model ProfilDesa {
+  id            Int      @id @default(autoincrement())
+  namaDesa      String
+  kodeDesa      String?
+  kecamatan     String
+  kabupaten     String
+  provinsi      String
+  kodePos       String?
+  alamat        String?  @db.Text
+  telepon       String?
+  email         String?
+  website       String?
+  logoUrl       String?
+  kepalaDesaNama String?
+  kepalaDesaNip  String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+// Activity Log
+model ActivityLog {
+  id          Int      @id @default(autoincrement())
+  userId      Int?
+  action      String
+  description String   @db.Text
+  entityType  String?  // penduduk, surat, keluarga, etc.
+  entityId    Int?
+  createdAt   DateTime @default(now())
+}
