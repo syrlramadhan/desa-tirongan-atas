@@ -112,9 +112,9 @@ export default function DataPendudukPage() {
   }
 
   return (
-    <div className="p-8">
+    <div className="p-4 lg:p-8">
       {/* Breadcrumb */}
-      <div className="flex items-center gap-2 text-sm text-gray-600 mb-6">
+      <div className="flex items-center gap-2 text-sm text-gray-600 mb-4 lg:mb-6 overflow-x-auto whitespace-nowrap">
         <Link href="/dashboard" className="hover:text-blue-600">Dashboard</Link>
         <span>›</span>
         <span className="text-gray-500">Master Data</span>
@@ -123,36 +123,37 @@ export default function DataPendudukPage() {
       </div>
 
       {/* Page Title */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4 lg:mb-6">
         <div className="flex items-center gap-3">
-          <div className="p-3 bg-blue-500 rounded-lg">
-            <UserGroupIcon className="w-6 h-6 text-white" />
+          <div className="p-2 lg:p-3 bg-blue-500 rounded-lg">
+            <UserGroupIcon className="w-5 h-5 lg:w-6 lg:h-6 text-white" />
           </div>
-          <h1 className="text-2xl font-bold text-gray-900">Data Penduduk</h1>
+          <h1 className="text-xl lg:text-2xl font-bold text-gray-900">Data Penduduk</h1>
         </div>
-        <button className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
-          <PlusIcon className="w-5 h-5" />
-          Tambah Penduduk
+        <button className="flex items-center justify-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm lg:text-base">
+          <PlusIcon className="w-4 h-4 lg:w-5 lg:h-5" />
+          <span className="hidden sm:inline">Tambah Penduduk</span>
+          <span className="sm:hidden">Tambah</span>
         </button>
       </div>
 
       {/* Search & Filter */}
-      <div className="bg-white rounded-lg shadow p-4 mb-6">
-        <form onSubmit={handleSearch} className="flex gap-4">
-          <div className="relative flex-1 max-w-md">
+      <div className="bg-white rounded-lg shadow p-3 lg:p-4 mb-4 lg:mb-6">
+        <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-3 lg:gap-4">
+          <div className="relative flex-1">
             <input
               type="text"
               placeholder="Cari berdasarkan NIK atau Nama..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm lg:text-base"
             />
             <MagnifyingGlassIcon className="w-5 h-5 text-gray-400 absolute left-3 top-2.5" />
           </div>
           <select 
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="px-3 lg:px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm lg:text-base"
           >
             <option value="">Semua Status</option>
             <option value="KAWIN">Kawin</option>
@@ -160,14 +161,14 @@ export default function DataPendudukPage() {
             <option value="CERAI_HIDUP">Cerai Hidup</option>
             <option value="CERAI_MATI">Cerai Mati</option>
           </select>
-          <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+          <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm lg:text-base">
             Cari
           </button>
         </form>
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-4 gap-4 mb-6">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4 mb-4 lg:mb-6">
         <div className="bg-white rounded-lg shadow p-4">
           <div className="text-2xl font-bold text-blue-600">{data?.stats.total || 0}</div>
           <div className="text-sm text-gray-600">Total Penduduk</div>
@@ -188,7 +189,8 @@ export default function DataPendudukPage() {
 
       {/* Table */}
       <div className="bg-white rounded-lg shadow overflow-hidden">
-        <table className="w-full">
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[800px]">
           <thead className="bg-gray-50">
             <tr>
               <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">No</th>
@@ -241,24 +243,27 @@ export default function DataPendudukPage() {
           </tbody>
         </table>
 
+        </div>
+
         {/* Pagination */}
-        <div className="px-4 py-3 bg-gray-50 border-t border-gray-200 flex items-center justify-between">
-          <div className="text-sm text-gray-600">
+        <div className="px-3 lg:px-4 py-3 bg-gray-50 border-t border-gray-200 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div className="text-xs lg:text-sm text-gray-600 text-center sm:text-left">
             Menampilkan {data ? (currentPage - 1) * 10 + 1 : 0}-{data ? Math.min(currentPage * 10, data.pagination.total) : 0} dari {data?.pagination.total || 0} data
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-1 lg:gap-2 flex-wrap justify-center">
             <button 
               onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
               disabled={currentPage === 1}
-              className="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-100 disabled:opacity-50"
+              className="px-2 lg:px-3 py-1 border border-gray-300 rounded text-xs lg:text-sm hover:bg-gray-100 disabled:opacity-50"
             >
-              Sebelumnya
+              <span className="hidden sm:inline">Sebelumnya</span>
+              <span className="sm:hidden">Prev</span>
             </button>
             {Array.from({ length: data?.pagination.totalPages || 1 }, (_, i) => i + 1).slice(0, 5).map(page => (
               <button 
                 key={page}
                 onClick={() => setCurrentPage(page)}
-                className={`px-3 py-1 rounded text-sm ${
+                className={`px-2 lg:px-3 py-1 rounded text-xs lg:text-sm ${
                   currentPage === page 
                     ? "bg-blue-600 text-white" 
                     : "border border-gray-300 hover:bg-gray-100"
@@ -270,9 +275,10 @@ export default function DataPendudukPage() {
             <button 
               onClick={() => setCurrentPage(p => Math.min(data?.pagination.totalPages || 1, p + 1))}
               disabled={currentPage === (data?.pagination.totalPages || 1)}
-              className="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-100 disabled:opacity-50"
+              className="px-2 lg:px-3 py-1 border border-gray-300 rounded text-xs lg:text-sm hover:bg-gray-100 disabled:opacity-50"
             >
-              Selanjutnya
+              <span className="hidden sm:inline">Selanjutnya</span>
+              <span className="sm:hidden">Next</span>
             </button>
           </div>
         </div>

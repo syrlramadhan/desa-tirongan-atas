@@ -88,9 +88,9 @@ export default function DataWilayahPage() {
   }
 
   return (
-    <div className="p-8">
+    <div className="p-4 lg:p-8">
       {/* Breadcrumb */}
-      <div className="flex items-center gap-2 text-sm text-gray-600 mb-6">
+      <div className="flex items-center gap-2 text-sm text-gray-600 mb-4 lg:mb-6 overflow-x-auto whitespace-nowrap">
         <Link href="/dashboard" className="hover:text-blue-600">Dashboard</Link>
         <span>›</span>
         <span className="text-gray-500">Master Data</span>
@@ -99,21 +99,22 @@ export default function DataWilayahPage() {
       </div>
 
       {/* Page Title */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4 lg:mb-6">
         <div className="flex items-center gap-3">
-          <div className="p-3 bg-purple-500 rounded-lg">
-            <MapIcon className="w-6 h-6 text-white" />
+          <div className="p-2 lg:p-3 bg-purple-500 rounded-lg">
+            <MapIcon className="w-5 h-5 lg:w-6 lg:h-6 text-white" />
           </div>
-          <h1 className="text-2xl font-bold text-gray-900">Data Wilayah</h1>
+          <h1 className="text-xl lg:text-2xl font-bold text-gray-900">Data Wilayah</h1>
         </div>
-        <button className="flex items-center gap-2 bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors">
-          <PlusIcon className="w-5 h-5" />
-          Tambah Wilayah
+        <button className="flex items-center justify-center gap-2 bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors text-sm lg:text-base">
+          <PlusIcon className="w-4 h-4 lg:w-5 lg:h-5" />
+          <span className="hidden sm:inline">Tambah Wilayah</span>
+          <span className="sm:hidden">Tambah</span>
         </button>
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-4 gap-4 mb-6">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4 mb-4 lg:mb-6">
         <div className="bg-white rounded-lg shadow p-4">
           <div className="text-2xl font-bold text-purple-600">{data?.stats?.totalDusun || 0}</div>
           <div className="text-sm text-gray-600">Total Dusun</div>
@@ -133,10 +134,10 @@ export default function DataWilayahPage() {
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-2 mb-6">
+      <div className="flex gap-2 mb-4 lg:mb-6">
         <button
           onClick={() => setActiveTab("dusun")}
-          className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+          className={`px-3 lg:px-4 py-2 rounded-lg font-medium transition-colors text-sm lg:text-base ${
             activeTab === "dusun"
               ? "bg-purple-600 text-white"
               : "bg-white text-gray-700 hover:bg-gray-100"
@@ -146,7 +147,7 @@ export default function DataWilayahPage() {
         </button>
         <button
           onClick={() => setActiveTab("rt")}
-          className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+          className={`px-3 lg:px-4 py-2 rounded-lg font-medium transition-colors text-sm lg:text-base ${
             activeTab === "rt"
               ? "bg-purple-600 text-white"
               : "bg-white text-gray-700 hover:bg-gray-100"
@@ -159,7 +160,8 @@ export default function DataWilayahPage() {
       {/* Table Dusun */}
       {activeTab === "dusun" && (
         <div className="bg-white rounded-lg shadow overflow-hidden">
-          <table className="w-full">
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[800px]">
             <thead className="bg-gray-50">
               <tr>
                 <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">No</th>
@@ -209,13 +211,15 @@ export default function DataWilayahPage() {
               ))}
             </tbody>
           </table>
+          </div>
         </div>
       )}
 
       {/* Table RT */}
       {activeTab === "rt" && (
         <div className="bg-white rounded-lg shadow overflow-hidden">
-          <table className="w-full">
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[700px]">
             <thead className="bg-gray-50">
               <tr>
                 <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">No</th>
@@ -256,6 +260,7 @@ export default function DataWilayahPage() {
               ))}
             </tbody>
           </table>
+          </div>
         </div>
       )}
     </div>

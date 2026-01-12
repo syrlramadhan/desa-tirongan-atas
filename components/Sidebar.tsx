@@ -11,10 +11,16 @@ import {
   ChevronRightIcon,
   ChevronDownIcon,
   UserCircleIcon,
-  Cog6ToothIcon
+  Cog6ToothIcon,
+  XMarkIcon
 } from "@heroicons/react/24/outline";
 
-export default function Sidebar() {
+interface SidebarProps {
+  isOpen?: boolean;
+  onClose?: () => void;
+}
+
+export default function Sidebar({ isOpen = true, onClose }: SidebarProps) {
   const pathname = usePathname();
   const [openMenu, setOpenMenu] = useState<string | null>(null);
 
@@ -29,6 +35,13 @@ export default function Sidebar() {
     }
   }, [pathname]);
 
+  // Close sidebar on route change (mobile)
+  useEffect(() => {
+    if (onClose) {
+      onClose();
+    }
+  }, [pathname]);
+
   const toggleMenu = (menu: string) => {
     setOpenMenu(openMenu === menu ? null : menu);
   };
@@ -37,7 +50,21 @@ export default function Sidebar() {
   const isActiveParent = (path: string) => pathname.startsWith(path);
 
   return (
-    <aside className="w-64 bg-gradient-to-b from-blue-100 to-blue-50 h-screen fixed left-0 top-0 flex flex-col shadow-lg">
+    <>
+      {/* Overlay for mobile */}
+      {isOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+          onClick={onClose}
+        />
+      )}
+      
+      <aside className={`
+        w-64 bg-gradient-to-b from-blue-100 to-blue-50 h-screen fixed left-0 top-0 flex flex-col shadow-lg z-50
+        transform transition-transform duration-300 ease-in-out
+        ${isOpen ? 'translate-x-0' : '-translate-x-full'}
+        lg:translate-x-0
+      `}>
       {/* Logo Section */}
       <div className="bg-white p-4 flex items-center gap-3 border-b border-blue-200">
         <div className="w-12 h-12 relative flex-shrink-0">
@@ -56,6 +83,13 @@ export default function Sidebar() {
             Kec. Bungku Utara
           </div>
         </div>
+        {/* Close button for mobile */}
+        <button 
+          onClick={onClose}
+          className="lg:hidden p-1 rounded-lg hover:bg-gray-100"
+        >
+          <XMarkIcon className="w-5 h-5 text-gray-600" />
+        </button>
       </div>
 
       {/* Navigation Menu */}
@@ -252,5 +286,6 @@ export default function Sidebar() {
         </div>
       </div>
     </aside>
+    </>
   );
 }

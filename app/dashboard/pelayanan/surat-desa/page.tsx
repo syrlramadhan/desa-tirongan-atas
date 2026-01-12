@@ -119,9 +119,9 @@ export default function LayananSuratDesaPage() {
   ];
 
   return (
-    <div className="p-8">
+    <div className="p-4 lg:p-8">
       {/* Breadcrumb */}
-      <div className="flex items-center gap-2 text-sm text-gray-600 mb-6">
+      <div className="flex items-center gap-2 text-sm text-gray-600 mb-4 lg:mb-6 overflow-x-auto whitespace-nowrap">
         <Link href="/dashboard" className="hover:text-blue-600">Menu Utama</Link>
         <span>›</span>
         <Link href="/dashboard/pelayanan" className="hover:text-blue-600">Pelayanan</Link>
@@ -130,31 +130,31 @@ export default function LayananSuratDesaPage() {
       </div>
 
       {/* Page Title */}
-      <div className="flex items-center gap-3 mb-8">
-        <div className="p-3 bg-blue-500 rounded-lg">
-          <DocumentTextIcon className="w-8 h-8 text-white" />
+      <div className="flex items-center gap-3 mb-6 lg:mb-8">
+        <div className="p-2 lg:p-3 bg-blue-500 rounded-lg">
+          <DocumentTextIcon className="w-6 h-6 lg:w-8 lg:h-8 text-white" />
         </div>
-        <h1 className="text-3xl font-bold text-gray-900">Layanan Surat Desa</h1>
+        <h1 className="text-xl lg:text-3xl font-bold text-gray-900">Layanan Surat Desa</h1>
       </div>
 
       {/* Surat Keterangan Section */}
-      <section className="mb-10">
-        <h2 className="text-xl font-semibold text-gray-800 mb-4">Surat Keterangan</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+      <section className="mb-8 lg:mb-10">
+        <h2 className="text-lg lg:text-xl font-semibold text-gray-800 mb-3 lg:mb-4">Surat Keterangan</h2>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-3 lg:gap-4">
           {suratKeteranganItems.map((item, index) => (
             <Link
               key={index}
               href={item.disabled ? "#" : item.href}
-              className={`p-6 bg-white rounded-lg shadow hover:shadow-lg transition-all border border-gray-200 ${
+              className={`p-4 lg:p-6 bg-white rounded-lg shadow hover:shadow-lg transition-all border border-gray-200 ${
                 item.disabled ? "opacity-50 cursor-not-allowed" : "hover:border-blue-300"
               }`}
               onClick={(e) => item.disabled && e.preventDefault()}
             >
-              <div className="flex flex-col items-center text-center gap-3">
-                <div className={`p-4 ${item.color} rounded-lg`}>
-                  <item.icon className="w-8 h-8 text-white" />
+              <div className="flex flex-col items-center text-center gap-2 lg:gap-3">
+                <div className={`p-3 lg:p-4 ${item.color} rounded-lg`}>
+                  <item.icon className="w-6 h-6 lg:w-8 lg:h-8 text-white" />
                 </div>
-                <h3 className="text-sm font-medium text-gray-800 leading-tight">
+                <h3 className="text-xs lg:text-sm font-medium text-gray-800 leading-tight">
                   {item.title}
                 </h3>
               </div>
@@ -165,19 +165,19 @@ export default function LayananSuratDesaPage() {
 
       {/* Surat Pengantar Section */}
       <section>
-        <h2 className="text-xl font-semibold text-gray-800 mb-4">Surat Pengantar</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        <h2 className="text-lg lg:text-xl font-semibold text-gray-800 mb-3 lg:mb-4">Surat Pengantar</h2>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-3 lg:gap-4">
           {suratPengantarItems.map((item, index) => (
             <Link
               key={index}
               href={item.href}
-              className="p-6 bg-white rounded-lg shadow hover:shadow-lg transition-all border border-gray-200 hover:border-green-300"
+              className="p-4 lg:p-6 bg-white rounded-lg shadow hover:shadow-lg transition-all border border-gray-200 hover:border-green-300"
             >
-              <div className="flex flex-col items-center text-center gap-3">
-                <div className={`p-4 ${item.color} rounded-lg`}>
-                  <item.icon className="w-8 h-8 text-white" />
+              <div className="flex flex-col items-center text-center gap-2 lg:gap-3">
+                <div className={`p-3 lg:p-4 ${item.color} rounded-lg`}>
+                  <item.icon className="w-6 h-6 lg:w-8 lg:h-8 text-white" />
                 </div>
-                <h3 className="text-sm font-medium text-gray-800 leading-tight">
+                <h3 className="text-xs lg:text-sm font-medium text-gray-800 leading-tight">
                   {item.title}
                 </h3>
               </div>

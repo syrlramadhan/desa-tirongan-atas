@@ -2,10 +2,15 @@
 
 import { useRouter } from "next/navigation";
 import { 
-  ArrowRightOnRectangleIcon
+  ArrowRightOnRectangleIcon,
+  Bars3Icon
 } from "@heroicons/react/24/outline";
 
-export default function Header() {
+interface HeaderProps {
+  onMenuClick?: () => void;
+}
+
+export default function Header({ onMenuClick }: HeaderProps) {
   const router = useRouter();
 
   const handleLogout = () => {
@@ -15,11 +20,22 @@ export default function Header() {
   };
 
   return (
-    <header className="bg-white border-b border-gray-200 h-16 fixed top-0 left-64 right-0 z-40 flex items-center justify-end px-6 shadow-sm">
+    <header className="bg-white border-b border-gray-200 h-16 fixed top-0 left-0 right-0 lg:left-64 z-30 flex items-center justify-between px-4 lg:px-6 shadow-sm">
+      {/* Hamburger menu for mobile */}
+      <button 
+        onClick={onMenuClick}
+        className="lg:hidden p-2 rounded-lg hover:bg-gray-100"
+      >
+        <Bars3Icon className="w-6 h-6 text-gray-700" />
+      </button>
+      
+      {/* Spacer for desktop */}
+      <div className="hidden lg:block"></div>
+      
       {/* Logout Button */}
       <button 
         onClick={handleLogout}
-        className="flex items-center gap-2 px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+        className="flex items-center gap-2 px-3 py-2 lg:px-4 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
       >
         <ArrowRightOnRectangleIcon className="w-5 h-5" />
         <span className="text-sm font-medium">Logout</span>

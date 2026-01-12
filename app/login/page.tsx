@@ -110,11 +110,11 @@ export default function LoginPage() {
       </div>
 
       {/* Right Side - Login Form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center bg-gradient-to-b from-gray-50 to-blue-50 p-8">
+      <div className="w-full lg:w-1/2 flex items-center justify-center bg-gradient-to-b from-gray-50 to-blue-50 p-4 sm:p-8 min-h-screen lg:min-h-0">
         <div className="w-full max-w-md">
           {/* Mobile Logo */}
-          <div className="lg:hidden text-center mb-8">
-            <div className="w-20 h-20 mx-auto bg-gradient-to-br from-blue-600 to-blue-700 rounded-full p-2 shadow-lg mb-4">
+          <div className="lg:hidden text-center mb-6 sm:mb-8">
+            <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto bg-gradient-to-br from-blue-600 to-blue-700 rounded-full p-2 shadow-lg mb-3 sm:mb-4">
               <div className="w-full h-full bg-white rounded-full p-1">
                 <div className="w-full h-full relative">
                   <Image
@@ -131,9 +131,9 @@ export default function LoginPage() {
           </div>
 
           {/* Login Card */}
-          <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
-            <div className="text-center mb-8">
-              <h2 className="text-2xl font-bold text-gray-800">Selamat Datang!</h2>
+          <div className="bg-white rounded-2xl shadow-xl p-5 sm:p-8 border border-gray-100">
+            <div className="text-center mb-6 sm:mb-8">
+              <h2 className="text-xl sm:text-2xl font-bold text-gray-800">Selamat Datang!</h2>
               <p className="text-gray-500 text-sm mt-2">Silahkan login untuk melanjutkan</p>
             </div>
 
@@ -148,20 +148,20 @@ export default function LoginPage() {
               </div>
             )}
 
-            <form onSubmit={handleLogin} className="space-y-6">
+            <form onSubmit={handleLogin} className="space-y-4 sm:space-y-6">
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
                   Username
                 </label>
                 <div className="relative group">
-                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                  <div className="absolute inset-y-0 left-0 pl-3 sm:pl-4 flex items-center pointer-events-none">
                     <UserIcon className="w-5 h-5 text-gray-400 group-focus-within:text-blue-500 transition-colors" />
                   </div>
                   <input
                     type="text"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
-                    className="w-full pl-12 pr-4 py-3.5 bg-gray-50 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 focus:bg-white transition-all text-gray-800"
+                    className="w-full pl-10 sm:pl-12 pr-4 py-3 sm:py-3.5 bg-gray-50 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 focus:bg-white transition-all text-gray-800 text-sm sm:text-base"
                     placeholder="Masukkan username"
                     required
                   />
@@ -173,14 +173,14 @@ export default function LoginPage() {
                   Password
                 </label>
                 <div className="relative group">
-                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                  <div className="absolute inset-y-0 left-0 pl-3 sm:pl-4 flex items-center pointer-events-none">
                     <LockClosedIcon className="w-5 h-5 text-gray-400 group-focus-within:text-blue-500 transition-colors" />
                   </div>
                   <input
                     type={showPassword ? "text" : "password"}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full pl-12 pr-12 py-3.5 bg-gray-50 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 focus:bg-white transition-all text-gray-800"
+                    className="w-full pl-10 sm:pl-12 pr-12 py-3 sm:py-3.5 bg-gray-50 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 focus:bg-white transition-all text-gray-800 text-sm sm:text-base"
                     placeholder="Masukkan password"
                     required
                   />
@@ -201,7 +201,7 @@ export default function LoginPage() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className={`w-full py-4 rounded-xl font-semibold text-white shadow-lg transition-all ${
+                className={`w-full py-3 sm:py-4 rounded-xl font-semibold text-white shadow-lg transition-all text-sm sm:text-base ${
                   isLoading
                     ? "bg-blue-400 cursor-not-allowed"
                     : "bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 hover:shadow-blue-500/25 hover:shadow-xl active:scale-[0.98]"
@@ -222,9 +222,9 @@ export default function LoginPage() {
             </form>
 
             {/* Demo Credentials */}
-            <div className="mt-8 p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl border border-blue-100">
-              <p className="text-xs font-semibold text-gray-600 text-center mb-3 uppercase tracking-wide">Demo Login</p>
-              <div className="flex justify-center gap-6 text-sm">
+            <div className="mt-6 sm:mt-8 p-3 sm:p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl border border-blue-100">
+              <p className="text-xs font-semibold text-gray-600 text-center mb-2 sm:mb-3 uppercase tracking-wide">Demo Login</p>
+              <div className="flex justify-center gap-4 sm:gap-6 text-xs sm:text-sm">
                 <div className="text-center">
                   <span className="text-gray-500">Username</span>
                   <div className="font-mono font-semibold text-blue-600 bg-white px-3 py-1 rounded-lg mt-1 shadow-sm">admin</div>
@@ -238,7 +238,7 @@ export default function LoginPage() {
           </div>
 
           {/* Footer */}
-          <p className="text-center text-gray-500 text-sm mt-8">
+          <p className="text-center text-gray-500 text-xs sm:text-sm mt-6 sm:mt-8">
             © 2026 Desa Tirongan Atas. All rights reserved.
           </p>
         </div>

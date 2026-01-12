@@ -103,10 +103,10 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="p-8">
+    <div className="p-4 lg:p-8">
       {/* Header */}
-      <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
-        <h1 className="text-2xl font-bold text-gray-900 mb-2">
+      <div className="bg-white rounded-lg shadow-lg p-4 lg:p-6 mb-4 lg:mb-6">
+        <h1 className="text-xl lg:text-2xl font-bold text-gray-900 mb-2">
           Selamat Datang di Sistem Administrasi Desa
         </h1>
         <div className="text-gray-700">
@@ -120,63 +120,63 @@ export default function DashboardPage() {
       </div>
 
       {/* Stats Cards - Row 1 */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-        <div className="bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg shadow-lg p-5">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4 mb-4 lg:mb-6">
+        <div className="bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg shadow-lg p-3 lg:p-5">
           <div className="flex items-center justify-between">
             <div>
-              <div className="text-3xl font-bold">{stats.penduduk.total.toLocaleString()}</div>
-              <div className="text-blue-100 text-sm">Total Penduduk</div>
+              <div className="text-xl lg:text-3xl font-bold">{stats.penduduk.total.toLocaleString()}</div>
+              <div className="text-blue-100 text-xs lg:text-sm">Total Penduduk</div>
             </div>
-            <UsersIcon className="w-12 h-12 text-blue-200" />
+            <UsersIcon className="w-8 h-8 lg:w-12 lg:h-12 text-blue-200" />
           </div>
-          <div className="mt-3 flex items-center text-xs text-blue-100">
-            <ArrowTrendingUpIcon className="w-4 h-4 mr-1" />
+          <div className="mt-2 lg:mt-3 flex items-center text-xs text-blue-100">
+            <ArrowTrendingUpIcon className="w-3 h-3 lg:w-4 lg:h-4 mr-1" />
             +{stats.penduduk.pertumbuhanBulanIni} bulan ini
           </div>
         </div>
 
-        <div className="bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg shadow-lg p-5">
+        <div className="bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg shadow-lg p-3 lg:p-5">
           <div className="flex items-center justify-between">
             <div>
-              <div className="text-3xl font-bold">{stats.keluarga.total}</div>
-              <div className="text-green-100 text-sm">Kepala Keluarga</div>
+              <div className="text-xl lg:text-3xl font-bold">{stats.keluarga.total}</div>
+              <div className="text-green-100 text-xs lg:text-sm">Kepala Keluarga</div>
             </div>
-            <HomeModernIcon className="w-12 h-12 text-green-200" />
+            <HomeModernIcon className="w-8 h-8 lg:w-12 lg:h-12 text-green-200" />
           </div>
-          <div className="mt-3 text-xs text-green-100">
+          <div className="mt-2 lg:mt-3 text-xs text-green-100">
             {stats.keluarga.total} KK terdaftar
           </div>
         </div>
 
-        <div className="bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-lg shadow-lg p-5">
+        <div className="bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-lg shadow-lg p-3 lg:p-5">
           <div className="flex items-center justify-between">
             <div>
-              <div className="text-3xl font-bold">{stats.wilayah.dusun}</div>
-              <div className="text-purple-100 text-sm">Dusun</div>
+              <div className="text-xl lg:text-3xl font-bold">{stats.wilayah.dusun}</div>
+              <div className="text-purple-100 text-xs lg:text-sm">Dusun</div>
             </div>
-            <MapIcon className="w-12 h-12 text-purple-200" />
+            <MapIcon className="w-8 h-8 lg:w-12 lg:h-12 text-purple-200" />
           </div>
-          <div className="mt-3 text-xs text-purple-100">
+          <div className="mt-2 lg:mt-3 text-xs text-purple-100">
             {stats.wilayah.rw} RW, {stats.wilayah.rt} RT
           </div>
         </div>
 
-        <div className="bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-lg shadow-lg p-5">
+        <div className="bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-lg shadow-lg p-3 lg:p-5">
           <div className="flex items-center justify-between">
             <div>
-              <div className="text-3xl font-bold">{stats.surat.totalBulanIni}</div>
-              <div className="text-orange-100 text-sm">Surat Bulan Ini</div>
+              <div className="text-xl lg:text-3xl font-bold">{stats.surat.totalBulanIni}</div>
+              <div className="text-orange-100 text-xs lg:text-sm">Surat Bulan Ini</div>
             </div>
-            <DocumentTextIcon className="w-12 h-12 text-orange-200" />
+            <DocumentTextIcon className="w-8 h-8 lg:w-12 lg:h-12 text-orange-200" />
           </div>
-          <div className="mt-3 text-xs text-orange-100">
+          <div className="mt-2 lg:mt-3 text-xs text-orange-100">
             {stats.surat.selesai} selesai, {stats.surat.pending} pending
           </div>
         </div>
       </div>
 
       {/* Main Content Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6 mb-4 lg:mb-6">
         {/* Data Penduduk Summary */}
         <div className="bg-white rounded-lg shadow p-6">
           <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
@@ -288,7 +288,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Bottom Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
         {/* Recent Activities */}
         <div className="bg-white rounded-lg shadow p-6">
           <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
