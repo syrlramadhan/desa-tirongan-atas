@@ -1,8 +1,6 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
-export const dynamic = 'force-dynamic';
-
 // Get all wilayah (dusun, rw, rt)
 export async function GET() {
   try {
