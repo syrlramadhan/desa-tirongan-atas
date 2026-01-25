@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
 // Get all wilayah (dusun, rw, rt)
@@ -47,6 +47,89 @@ export async function GET() {
     console.error("Error fetching wilayah:", error);
     return NextResponse.json(
       { error: "Gagal mengambil data wilayah" },
+      { status: 500 }
+    );
+  }
+}
+
+// Create new wilayah (dusun, rw, or rt)
+export async function POST(request: NextRequest) {
+  try {
+    const body = await request.json();
+    const { type } = body;
+
+    if (type === "dusun") {
+      const dusun = await prisma.dusun.create({
+        data: {
+          nama: body.nama,
+          kode: body.kode || null,
+        },
+      });
+
+      await prisma.activityLog.create({
+        data: {
+          action: "CREATE",
+          description: `Dusun baru ditambahkan - ${body.nama}`,
+          entityType: "dusun",
+          entityId: dusun.id,
+        },
+      });
+
+      return NextResponse.json({ data: dusun }, { status: 201 });
+    }
+
+    if (type === "rw") {
+      const rw = await prisma.rW.create({
+        data: {
+          nama: body.nama,
+          nomor: body.nomor,
+          ketua: body.ketua || null,
+          dusunId: body.dusunId,
+        },
+      });
+
+      await prisma.activityLog.create({
+        data: {
+          action: "CREATE",
+          description: `RW baru ditambahkan - ${body.nama}`,
+          entityType: "rw",
+          entityId: rw.id,
+        },
+      });
+
+      return NextResponse.json({ data: rw }, { status: 201 });
+    }
+
+    if (type === "rt") {
+      const rt = await prisma.rT.create({
+        data: {
+          nama: body.nama,
+          nomor: body.nomor,
+          ketua: body.ketua || null,
+          rwId: body.rwId,
+        },
+      });
+
+      await prisma.activityLog.create({
+        data: {
+          action: "CREATE",
+          description: `RT baru ditambahkan - ${body.nama}`,
+          entityType: "rt",
+          entityId: rt.id,
+        },
+      });
+
+      return NextResponse.json({ data: rt }, { status: 201 });
+    }
+
+    return NextResponse.json(
+      { error: "Tipe wilayah tidak valid" },
+      { status: 400 }
+    );
+  } catch (error) {
+    console.error("Error creating wilayah:", error);
+    return NextResponse.json(
+      { error: "Gagal menambahkan data wilayah" },
       { status: 500 }
     );
   }

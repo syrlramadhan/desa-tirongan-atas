@@ -9,7 +9,8 @@ import {
   PencilIcon,
   TrashIcon,
   EyeIcon,
-  UsersIcon
+  UsersIcon,
+  XMarkIcon
 } from "@heroicons/react/24/outline";
 
 interface Keluarga {
@@ -37,15 +38,58 @@ interface KeluargaResponse {
   };
 }
 
+interface Dusun {
+  id: number;
+  nama: string;
+}
+
+interface FormData {
+  noKK: string;
+  kepalaKeluarga: string;
+  alamat: string;
+  rt: string;
+  rw: string;
+  dusunId: string;
+  kodePos: string;
+}
+
+const initialFormData: FormData = {
+  noKK: "",
+  kepalaKeluarga: "",
+  alamat: "",
+  rt: "",
+  rw: "",
+  dusunId: "",
+  kodePos: "",
+};
+
 export default function DataKeluargaPage() {
   const [data, setData] = useState<KeluargaResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [showModal, setShowModal] = useState(false);
+  const [formData, setFormData] = useState<FormData>(initialFormData);
+  const [submitting, setSubmitting] = useState(false);
+  const [dusunList, setDusunList] = useState<Dusun[]>([]);
 
   useEffect(() => {
     fetchKeluarga();
   }, [currentPage]);
+
+  useEffect(() => {
+    fetchDusun();
+  }, []);
+
+  const fetchDusun = async () => {
+    try {
+      const response = await fetch("/api/wilayah");
+      const result = await response.json();
+      setDusunList(result.dusun || []);
+    } catch (error) {
+      console.error("Error fetching dusun:", error);
+    }
+  };
 
   const fetchKeluarga = async () => {
     try {
@@ -88,6 +132,55 @@ export default function DataKeluargaPage() {
     }
   };
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!formData.noKK || !formData.kepalaKeluarga || !formData.alamat || !formData.rt || !formData.rw) {
+      alert("Mohon lengkapi semua field yang wajib diisi!");
+      return;
+    }
+
+    if (formData.noKK.length !== 16) {
+      alert("Nomor KK harus 16 digit!");
+      return;
+    }
+
+    setSubmitting(true);
+    try {
+      const payload = {
+        ...formData,
+        dusunId: formData.dusunId ? parseInt(formData.dusunId) : null,
+      };
+
+      const response = await fetch("/api/keluarga", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        alert("Data keluarga berhasil ditambahkan!");
+        setShowModal(false);
+        setFormData(initialFormData);
+        fetchKeluarga();
+      } else {
+        alert(result.error || "Gagal menambahkan data keluarga");
+      }
+    } catch (error) {
+      console.error("Error creating keluarga:", error);
+      alert("Gagal menambahkan data keluarga");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   if (loading && !data) {
     return (
       <div className="p-8 flex items-center justify-center min-h-[50vh]">
@@ -118,7 +211,10 @@ export default function DataKeluargaPage() {
           </div>
           <h1 className="text-xl lg:text-2xl font-bold text-gray-900">Data Keluarga</h1>
         </div>
-        <button className="flex items-center justify-center gap-2 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors text-sm lg:text-base">
+        <button 
+          onClick={() => setShowModal(true)}
+          className="flex items-center justify-center gap-2 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors text-sm lg:text-base"
+        >
           <PlusIcon className="w-4 h-4 lg:w-5 lg:h-5" />
           <span className="hidden sm:inline">Tambah Kartu Keluarga</span>
           <span className="sm:hidden">Tambah KK</span>
@@ -255,6 +351,178 @@ export default function DataKeluargaPage() {
           </div>
         </div>
       </div>
+
+      {/* Modal Tambah Keluarga */}
+      {showModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between p-4 border-b sticky top-0 bg-white">
+              <h2 className="text-lg font-semibold text-gray-900">Tambah Kartu Keluarga</h2>
+              <button 
+                onClick={() => {
+                  setShowModal(false);
+                  setFormData(initialFormData);
+                }}
+                className="p-1 hover:bg-gray-100 rounded"
+              >
+                <XMarkIcon className="w-6 h-6 text-gray-500" />
+              </button>
+            </div>
+            
+            <form onSubmit={handleSubmit} className="p-4 lg:p-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* No KK */}
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Nomor Kartu Keluarga <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="noKK"
+                    value={formData.noKK}
+                    onChange={handleInputChange}
+                    maxLength={16}
+                    placeholder="Masukkan 16 digit No. KK"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 text-sm text-gray-900 bg-white"
+                    required
+                  />
+                </div>
+
+                {/* Kepala Keluarga */}
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Nama Kepala Keluarga <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="kepalaKeluarga"
+                    value={formData.kepalaKeluarga}
+                    onChange={handleInputChange}
+                    placeholder="Masukkan nama kepala keluarga"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 text-sm text-gray-900 bg-white"
+                    required
+                  />
+                </div>
+
+                {/* Dusun */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Dusun
+                  </label>
+                  <select
+                    name="dusunId"
+                    value={formData.dusunId}
+                    onChange={handleInputChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 text-sm text-gray-900 bg-white"
+                  >
+                    <option value="">Pilih Dusun</option>
+                    {dusunList.map((dusun) => (
+                      <option key={dusun.id} value={dusun.id}>
+                        {dusun.nama}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Kode Pos */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Kode Pos
+                  </label>
+                  <input
+                    type="text"
+                    name="kodePos"
+                    value={formData.kodePos}
+                    onChange={handleInputChange}
+                    placeholder="Masukkan kode pos"
+                    maxLength={5}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 text-sm text-gray-900 bg-white"
+                  />
+                </div>
+
+                {/* RT */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    RT <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="rt"
+                    value={formData.rt}
+                    onChange={handleInputChange}
+                    placeholder="Contoh: 001"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 text-sm text-gray-900 bg-white"
+                    required
+                  />
+                </div>
+
+                {/* RW */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    RW <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="rw"
+                    value={formData.rw}
+                    onChange={handleInputChange}
+                    placeholder="Contoh: 001"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 text-sm text-gray-900 bg-white"
+                    required
+                  />
+                </div>
+
+                {/* Alamat */}
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Alamat Lengkap <span className="text-red-500">*</span>
+                  </label>
+                  <textarea
+                    name="alamat"
+                    value={formData.alamat}
+                    onChange={handleInputChange}
+                    placeholder="Masukkan alamat lengkap"
+                    rows={3}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 text-sm text-gray-900 bg-white"
+                    required
+                  />
+                </div>
+              </div>
+
+              {/* Buttons */}
+              <div className="flex justify-end gap-3 mt-6 pt-4 border-t">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowModal(false);
+                    setFormData(initialFormData);
+                  }}
+                  className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 text-sm"
+                >
+                  Batal
+                </button>
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed text-sm flex items-center gap-2"
+                >
+                  {submitting ? (
+                    <>
+                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                      Menyimpan...
+                    </>
+                  ) : (
+                    <>
+                      <PlusIcon className="w-4 h-4" />
+                      Simpan Data
+                    </>
+                  )}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -250,7 +250,7 @@ export default function SuratKeteranganFormPage() {
                     required
                     value={formData[field.name] || ""}
                     onChange={(e) => handleInputChange(field.name, e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 bg-white"
                   />
                 ) : field.type === "select" ? (
                   <select
@@ -258,7 +258,7 @@ export default function SuratKeteranganFormPage() {
                     required
                     value={formData[field.name] || ""}
                     onChange={(e) => handleInputChange(field.name, e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 bg-white"
                   >
                     <option value="">Pilih {field.label}</option>
                     {field.options?.map((option) => (
@@ -272,7 +272,7 @@ export default function SuratKeteranganFormPage() {
                     required
                     value={formData[field.name] || ""}
                     onChange={(e) => handleInputChange(field.name, e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 bg-white"
                   />
                 )}
               </div>
